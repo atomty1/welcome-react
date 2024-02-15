@@ -1,25 +1,65 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {  useState } from "react";
 
-function App() {
+const App = () => {
+
+  let [nameList, setNameList] = useState([]);
+  // Component to component interaction,
+  // props,
+  // useEffect
+  const myFunc = val => {
+   setNameList([...nameList, val]);
+  }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+
+      <AddPerson changeName={myFunc} />
+
+      {nameList.length > 0 ? <table border="1">
+        <thead>
+          <tr>
+            <th>S/N</th>
+            <th>Name</th>
+          
+          </tr>
+        </thead>
+        <tbody>
+          {nameList.map((userName, i) => (
+            <tr key={i}>
+              <td>{i + 1}</td>
+              <td>{userName}</td>
+            
+
+            </tr>
+          ))}
+        </tbody>
+      </table>
+        : <div>No user found</div>}
+
+
+
+    </>
   );
 }
 
+const AddPerson = ({ changeName }) => {
+  let [name, setName] = useState("");
+  const addName = ()=>{
+    changeName(name);
+    setName("");
+  }
+
+  return (
+    <>
+      <input value={name} onInput={e => setName(e.target.value)} />
+      <button onClick={addName}>add name</button>
+    </>
+
+  );
+}
+// const DeleteButton = ()=>{
+//   return <button>delete</button>
+// }
 export default App;
+
